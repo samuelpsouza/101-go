@@ -11,6 +11,14 @@ type UnsortedArray[T cmp.Ordered] struct {
   Size int
 }
 
+func NewUnsortedArray[T cmp.Ordered](maxSize int) UnsortedArray[T] {
+  return UnsortedArray[T] {
+    Array: make([]T, 0, maxSize),
+    MaxSize: maxSize,
+    Size: 0,
+  }
+}
+
 func (u *UnsortedArray[T]) insert(value T) error {
   if u.Size >= u.MaxSize {
     return fmt.Errorf("The array is already full")
@@ -85,7 +93,10 @@ func (u *UnsortedArray[T]) minInArray() (error, int, T) {
 
 func (u *UnsortedArray[T]) minAndMaxInArray() (error, T, T) {
   var minimumValue, maximumValue T
-  if u.Size == 0
+  if u.Size == 0 {
+    return fmt.Errorf("Min and Max of an empty array."), minimumValue, maximumValue
+  }
+
   minimum, maximum := 0, 0
   for index := range(u.Size) {
     indexValue := u.Array[index]
@@ -108,6 +119,22 @@ func main() {
   //fmt.Println(myFirstArray)
 
   var mySecondArray UnsortedArray[int]
-  mySecondArray.insert(2)
+  err := mySecondArray.insert(2)
   
+  if err != nil {
+    fmt.Println(err)
+  }
+  
+  myThirdArray := NewUnsortedArray[int](10)
+  fmt.Println("Printing empty array")
+  myThirdArray.traverse(func(v int) {fmt.Println("value: %d", v)})  
+
+  fmt.Println("Printing non-empty array")
+  
+  err = myThirdArray.insert(2)
+  if err != nil {
+    fmt.Println(err)
+  }
+
+  myThirdArray.traverse(func(v int) {fmt.Println("value: %d", v)})  
 }
