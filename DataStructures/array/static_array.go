@@ -1,4 +1,4 @@
-package main
+package array
 
 import (
 	"cmp"
@@ -110,39 +110,4 @@ func (u *UnsortedArray[T]) minAndMaxInArray() (error, T, T) {
 	}
 
 	return nil, minimumValue, maximumValue
-}
-
-func main() {
-	//var myFirstArray [3]int
-	//myFirstArray[0] = 2
-	//myFirstArray[1] = 1
-	//fmt.Println(myFirstArray)
-
-	var mySecondArray UnsortedArray[int]
-	err := mySecondArray.insert(2)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	myThirdArray := NewUnsortedArray[int](10)
-	fmt.Println("Printing empty array")
-	myThirdArray.traverse(func(v int) { fmt.Println("value:", v) })
-
-	fmt.Println("Printing non-empty array")
-
-	err = myThirdArray.insert(2)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	myThirdArray.traverse(func(v int) { fmt.Println("value:", v) })
-
-	fmt.Println("Printing non-empty array")
-	myThirdArray.insert(19)
-	myThirdArray.traverse(func(v int) { fmt.Println("value:", v) })
-
-	fmt.Println("Printing non-empty array")
-	myThirdArray.insert(100)
-	myThirdArray.traverse(func(v int) { fmt.Println("value:", v) })
 }
