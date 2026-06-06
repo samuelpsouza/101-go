@@ -6,6 +6,7 @@ import (
 
 func TestUnsortedArray(t *testing.T) {
 	t.Run("NewUnsortedArray", testNewUnsortedArray)
+	t.Run("Insert", testInsert)
 }
 
 func testNewUnsortedArray(t *testing.T) {
@@ -36,4 +37,32 @@ func testNewUnsortedArray(t *testing.T) {
 		})
 	}
 
+}
+
+func testInsert(t *testing.T) {
+	t.Run("Successful inserts", func(t *testing.T) {
+		arrSize := 5
+		arr := NewUnsortedArray[int](arrSize)
+
+		for i := 0; i < arrSize; i++ {
+			if err := arr.insert((i + 1) * 10); err != nil {
+				t.Fatalf("Insert %d failed: %v", (i+1)*10, err)
+			}
+		}
+
+		if arr.Size != arrSize {
+			t.Errorf("Expected size=5, got %d", arr.Size)
+		}
+	})
+
+	t.Run("Insert when full", func(t *testing.T) {
+		arr := NewUnsortedArray[int](1)
+		arr.insert(100)
+
+		err := arr.insert(200)
+		if err == nil || err.Error() != "The array is already full" {
+			t.Errorf("Expected 'THe array is already full' error, got %v", err)
+		}
+
+	})
 }
