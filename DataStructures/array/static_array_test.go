@@ -7,6 +7,12 @@ import (
 func TestUnsortedArray(t *testing.T) {
 	t.Run("NewUnsortedArray", testNewUnsortedArray)
 	t.Run("Insert", testInsert)
+	t.Run("Delete", testDelete)
+	t.Run("Find", testFind)
+	t.Run("Traverse", testTraverse)
+	t.Run("maxInArray", testMaxInArray)
+	t.Run("minInArray", testMinInArray)
+	t.Run("minAndMaxInArray", testMinAndMaxInArray)
 }
 
 func testNewUnsortedArray(t *testing.T) {
@@ -66,3 +72,78 @@ func testInsert(t *testing.T) {
 
 	})
 }
+
+func testDelete(t *testing.T) {
+	t.Run("Normal deletes", func(t *testing.T) {
+		arr := NewUnsortedArray[int](5)
+		arr.insert(10)
+		arr.insert(20)
+		arr.insert(30)
+		arr.insert(40)
+
+		if err := arr.delete(1); err != nil {
+			t.Fatalf("Delete failed: %v", err)
+		}
+
+		if arr.Size != 3 {
+			t.Errorf("Expected size 3, got %d", arr.Size)
+		}
+
+	})
+
+	t.Run("Delete the last element", func(t *testing.T) {
+		arr := NewUnsortedArray[int](3)
+		arr.insert(10)
+		arr.insert(20)
+
+		if err := arr.delete(1); err != nil {
+			t.Fatalf("Delete failed: %v", err)
+		}
+
+		if arr.Size != 1 || arr.Array[0] != 10 {
+			t.Errorf("Delete last element failed")
+		}
+	})
+
+	t.Run("Delete only element", func(t *testing.T) {
+		arr := NewUnsortedArray[int](1)
+		arr.insert(10)
+
+		if err := arr.delete(0); err != nil {
+			t.Fatalf("Delete failed: %v", err)
+		}
+
+		if arr.Size != 0 {
+			t.Errorf("Size should be 0 after deleting only element")
+		}
+	})
+
+	t.Run("Error cases", func(t *testing.T) {
+		arr := NewUnsortedArray[int](5)
+
+		if err := arr.delete(0); err == nil {
+			t.Errorf("Expected error when deleting from empty array")
+		}
+
+		arr.insert(10)
+		arr.insert(20)
+
+		if err := arr.delete(-1); err == nil {
+			t.Errorf("Expected error for negative index")
+		}
+
+		if err := arr.delete(5); err == nil {
+			t.Errorf("Expected error for index >= Size")
+		}
+	})
+}
+
+func testFind(t *testing.T) {}
+
+func testTraverse(t *testing.T) {}
+
+func testMaxInArray(t *testing.T) {}
+
+func testMinInArray(t *testing.T) {}
+
+func testMinAndMaxInArray(t *testing.T) {}

@@ -33,7 +33,7 @@ func (u *UnsortedArray[T]) insert(value T) error {
 func (u *UnsortedArray[T]) delete(index int) error {
 	if u.Size == 0 {
 		return fmt.Errorf("Delete from an empty array")
-	} else if index < 0 && index >= u.Size {
+	} else if index < 0 || index >= u.Size {
 		return fmt.Errorf("Index %d out of range", index)
 	}
 
