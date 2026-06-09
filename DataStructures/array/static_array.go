@@ -109,5 +109,5 @@ func (u *UnsortedArray[T]) minAndMaxInArray() (error, T, T) {
 		}
 	}
 
-	return nil, minimumValue, maximumValue
+	return nil, u.Array[minimum], u.Array[maximum]
 }

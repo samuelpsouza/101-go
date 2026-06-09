@@ -1,6 +1,7 @@
 package array
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -10,9 +11,11 @@ func TestUnsortedArray(t *testing.T) {
 	t.Run("Delete", testDelete)
 	t.Run("Find", testFind)
 	t.Run("Traverse", testTraverse)
-	t.Run("maxInArray", testMaxInArray)
-	t.Run("minInArray", testMinInArray)
-	t.Run("minAndMaxInArray", testMinAndMaxInArray)
+	t.Run("TraverseEmptyArray", testTraverseEmptyArray)
+	t.Run("MaxInArray", testMaxInArray)
+	t.Run("MaxInEmptyArray", testMaxInEmptyArray)
+	t.Run("MinInArray", testMinInArray)
+	t.Run("MinAndMaxInArray", testMinAndMaxInArray)
 }
 
 func testNewUnsortedArray(t *testing.T) {
@@ -138,12 +141,130 @@ func testDelete(t *testing.T) {
 	})
 }
 
-func testFind(t *testing.T) {}
+func testFind(t *testing.T) {
+	arr := NewUnsortedArray[int](10)
+	arr.insert(5)
+	arr.insert(10)
+	arr.insert(15)
+	arr.insert(10)
 
-func testTraverse(t *testing.T) {}
+	tests := []struct {
+		target   int
+		expected int
+	}{
+		{5, 0},
+		{10, 1},
+		{15, 2},
+		{99, -1},
+	}
 
-func testMaxInArray(t *testing.T) {}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("Find %d", tt.target), func(t *testing.T) {
+			got := arr.find(tt.target)
+			if got != tt.expected {
+				t.Errorf("Expected %d, got %d", tt.expected, got)
+			}
+		})
+	}
 
-func testMinInArray(t *testing.T) {}
+	arr.delete(1)
+	if idx := arr.find(10); idx != 1 {
+		t.Errorf("Find after delete failed, got %d", idx)
+	}
+}
 
-func testMinAndMaxInArray(t *testing.T) {}
+func testTraverse(t *testing.T) {
+	arr := NewUnsortedArray[int](5)
+	arr.insert(1)
+	arr.insert(2)
+	arr.insert(3)
+
+	collected := []int{}
+	arr.traverse(func(v int) {
+		collected = append(collected, v)
+	})
+
+	expected := []int{1, 2, 3}
+	if len(collected) != len(expected) {
+		t.Fatalf("Expected %d elements, got %d", len(expected), len(collected))
+	}
+
+	for i, v := range expected {
+		if collected[i] != v {
+			t.Errorf("Traverse mismatch at index %d", i)
+		}
+	}
+}
+
+func testTraverseEmptyArray(t *testing.T) {
+	empty := NewUnsortedArray[int](5)
+	called := false
+
+	empty.traverse(func(v int) {
+		called = true
+	})
+
+	if called {
+		t.Errorf("Traverse should not call func on empty array")
+	}
+}
+
+func testMaxInArray(t *testing.T) {
+	arr := NewUnsortedArray[int](5)
+	arr.insert(-5)
+	arr.insert(10)
+	arr.insert(3)
+	arr.insert(7)
+
+	err, idx, val := arr.maxInArray()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if val != 10 || idx != 1 {
+		t.Errorf("Expected max=10 at index 1, got %d at %d", val, idx)
+	}
+}
+
+func testMaxInEmptyArray(t *testing.T) {
+	arr := NewUnsortedArray[int](5)
+
+	err, _, _ := arr.maxInArray()
+	if err == nil {
+		t.Errorf("Expected error for empty array")
+	}
+}
+
+func testMinInArray(t *testing.T) {
+	arr := NewUnsortedArray[int](5)
+	arr.insert(-5)
+	arr.insert(10)
+	arr.insert(3)
+	arr.insert(7)
+
+	err, idx, val := arr.minInArray()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if val != -5 || idx != 0 {
+		t.Errorf("Expected max=10 at index 1, got %d at %d", val, idx)
+	}
+}
+
+func testMinAndMaxInArray(t *testing.T) {
+	arr := NewUnsortedArray[int](5)
+	arr.insert(-5)
+	arr.insert(10)
+	arr.insert(3)
+	arr.insert(7)
+
+	err, min, max := arr.minAndMaxInArray()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if min != -5 || max != 10 {
+		t.Errorf("Expected min=-5, max=10, got min=%v, max=%v", min, max)
+	}
+}
