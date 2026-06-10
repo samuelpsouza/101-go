@@ -5,20 +5,7 @@ import (
 	"testing"
 )
 
-func TestUnsortedArray(t *testing.T) {
-	t.Run("NewUnsortedArray", testNewUnsortedArray)
-	t.Run("Insert", testInsert)
-	t.Run("Delete", testDelete)
-	t.Run("Find", testFind)
-	t.Run("Traverse", testTraverse)
-	t.Run("TraverseEmptyArray", testTraverseEmptyArray)
-	t.Run("MaxInArray", testMaxInArray)
-	t.Run("MaxInEmptyArray", testMaxInEmptyArray)
-	t.Run("MinInArray", testMinInArray)
-	t.Run("MinAndMaxInArray", testMinAndMaxInArray)
-}
-
-func testNewUnsortedArray(t *testing.T) {
+func TestNewUnsortedArray(t *testing.T) {
 	tests := []struct {
 		name    string
 		maxSize int
@@ -48,7 +35,7 @@ func testNewUnsortedArray(t *testing.T) {
 
 }
 
-func testInsert(t *testing.T) {
+func TestInsert(t *testing.T) {
 	t.Run("Successful inserts", func(t *testing.T) {
 		arrSize := 5
 		arr := NewUnsortedArray[int](arrSize)
@@ -76,7 +63,7 @@ func testInsert(t *testing.T) {
 	})
 }
 
-func testDelete(t *testing.T) {
+func TestDelete(t *testing.T) {
 	t.Run("Normal deletes", func(t *testing.T) {
 		arr := NewUnsortedArray[int](5)
 		arr.insert(10)
@@ -141,7 +128,7 @@ func testDelete(t *testing.T) {
 	})
 }
 
-func testFind(t *testing.T) {
+func TestFind(t *testing.T) {
 	arr := NewUnsortedArray[int](10)
 	arr.insert(5)
 	arr.insert(10)
@@ -173,7 +160,7 @@ func testFind(t *testing.T) {
 	}
 }
 
-func testTraverse(t *testing.T) {
+func TestTraverse(t *testing.T) {
 	arr := NewUnsortedArray[int](5)
 	arr.insert(1)
 	arr.insert(2)
@@ -196,7 +183,7 @@ func testTraverse(t *testing.T) {
 	}
 }
 
-func testTraverseEmptyArray(t *testing.T) {
+func TestTraverseEmptyArray(t *testing.T) {
 	empty := NewUnsortedArray[int](5)
 	called := false
 
@@ -226,7 +213,7 @@ func testMaxInArray(t *testing.T) {
 	}
 }
 
-func testMaxInEmptyArray(t *testing.T) {
+func TestMaxInEmptyArray(t *testing.T) {
 	arr := NewUnsortedArray[int](5)
 
 	err, _, _ := arr.maxInArray()
@@ -235,7 +222,7 @@ func testMaxInEmptyArray(t *testing.T) {
 	}
 }
 
-func testMinInArray(t *testing.T) {
+func TestMinInArray(t *testing.T) {
 	arr := NewUnsortedArray[int](5)
 	arr.insert(-5)
 	arr.insert(10)
@@ -252,7 +239,7 @@ func testMinInArray(t *testing.T) {
 	}
 }
 
-func testMinAndMaxInArray(t *testing.T) {
+func TestMinAndMaxInArray(t *testing.T) {
 	arr := NewUnsortedArray[int](5)
 	arr.insert(-5)
 	arr.insert(10)
